@@ -4,6 +4,7 @@ import os
 from typing import Any
 import sys
 from unittest.mock import patch
+from pprint import pprint
 
 # Add the parent directory to Python path to import axr_options
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -52,7 +53,7 @@ class TestAxrOptions(unittest.TestCase):
         )
 
         self.assertEqual(start_idx, 8)  # Index of [mcm] line
-        self.assertEqual(end_idx, 17)  # Index before [modded_exes]
+        self.assertEqual(end_idx, 17)  # Index before [modded_exes] or at empty new line
         self.assertEqual(len(mcm_settings), 8)  # 8 settings, no empty line
         self.assertIn("        21_game/card_game_21_minimum_rate = 500\n", mcm_settings)
         self.assertIn("        SMR/smr_amain/smr_enabled        = true\n", mcm_settings)

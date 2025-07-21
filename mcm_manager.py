@@ -2,7 +2,7 @@ import json
 import typing
 import sys
 from datetime import datetime
-
+from pprint import pprint
 
 def main():
     path = sys.argv[1] if len(sys.argv) > 1 else "."
@@ -135,8 +135,8 @@ def get_settings_section(
     for i in range(settings_section_start_index + 1, len(file_contents)):
         if file_contents[i].startswith("[") or file_contents[i].strip(" ") == "\n":
             settings_section_end_index = (
-                i - 1
-            )  # We only want actual settings, not new lines or brackets
+                i
+            )  # We only want actual settings, not new sections
             break
 
     # If we have start of mcm but no end, we assume the MCM settings are at the end of the file
