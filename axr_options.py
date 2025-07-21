@@ -3,6 +3,7 @@ import typing
 import sys
 from datetime import datetime
 
+
 def main():
     path = sys.argv[1] if len(sys.argv) > 1 else "."
     current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -66,7 +67,7 @@ def make_file_backup(file_contents: list[str], path: str) -> None:
 def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list[str]:
     """
     Merge the settings with the original file.
-    This will overwrite any existing settings in the original file.
+    This will overwrite any existing settings in the original file with the corresponding new settings.
     """
     result = original.copy()
     applied_settings: set[str] = set()
