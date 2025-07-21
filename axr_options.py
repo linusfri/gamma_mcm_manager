@@ -122,18 +122,18 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
 
 
 def get_settings_section(
-    axr_file_contents: list[str], section_name: str
+    file_contents: list[str], section_name: str
 ) -> tuple[list[str], int, int]:
     """
-    Returns the provided section from an axr_options file.
+    Returns the provided section from an options file.
     Raises ValueError if section is not present.
 
-    Example: mcm_settings = get_settings_section(axr_file_contents, "[mcm]\\n")
+    Example: mcm_settings = get_settings_section(file_contents, "[mcm]\\n")
     """
-    settings_section_begin_index = axr_file_contents.index(section_name)
+    settings_section_begin_index = file_contents.index(section_name)
     settings_section_end_index = None
-    for i in range(settings_section_begin_index + 1, len(axr_file_contents)):
-        if axr_file_contents[i].startswith("[") or axr_file_contents[i] == "\n":
+    for i in range(settings_section_begin_index + 1, len(file_contents)):
+        if file_contents[i].startswith("[") or file_contents[i] == "\n":
             settings_section_end_index = (
                 i - 1
             )  # We only want actual settings, not new lines or brackets
@@ -141,9 +141,9 @@ def get_settings_section(
 
     # If we have start of mcm but no end, we assume the MCM settings are at the end of the file
     if settings_section_end_index is None:
-        settings_section_end_index = len(axr_file_contents)
+        settings_section_end_index = len(file_contents)
 
-    mcm_settings = axr_file_contents[
+    mcm_settings = file_contents[
         settings_section_begin_index + 1 : settings_section_end_index
     ]
 
