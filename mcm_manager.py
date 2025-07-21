@@ -133,7 +133,7 @@ def get_settings_section(
     settings_section_start_index = file_contents.index(section_name)
     settings_section_end_index = None
     for i in range(settings_section_start_index + 1, len(file_contents)):
-        if file_contents[i].startswith("[") or file_contents[i] == "\n":
+        if file_contents[i].startswith("[") or file_contents[i].strip(" ") == "\n":
             settings_section_end_index = (
                 i - 1
             )  # We only want actual settings, not new lines or brackets
