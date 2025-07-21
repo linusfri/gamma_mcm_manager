@@ -14,3 +14,10 @@ For me it's bothering to keep up to speed with new changes to the MCM values for
 4. Make sure the settings are written to axr_options.ltx
 5. Rename the ``G.A.M.M.A. MCM values - Rename to keep your personal changes`` to ``G.A.M.M.A. MCM values - Saved``
 6. Place the merged ``axr_options.ltx`` file in ``mods/G.A.M.M.A. MCM values - Saved/gamedata/configs``
+
+## What does it do?
+It's a simple script that reads the ``settings.json`` file and then looks for corresponding settings in ``axr_options.ltx``. If it finds a corresponding setting in ``axr_options.ltx``, it will be overwritten with the setting in ``setting.json``.
+
+If a setting in ``settings.json`` doesn't exist in ``axr_options.ltx``, then that setting will be appended to the ``[mcm]-section`` in ``axr_options.ltx``.
+
+Everytime the program is run, a backup is created with a datetime stamp. This way you always have a file to go back to if things go wrong.
