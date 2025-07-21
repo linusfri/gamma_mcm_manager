@@ -13,34 +13,36 @@ def main():
 
     make_original_file_backup(axr_orig)
 
-    original_and_settings_diff = get_settings_and_original_file_diff(axr_orig, axr_settings)
-    if original_and_settings_diff:
-        print("The following settings are not present in the original file:")
-        for line in original_and_settings_diff:
-            print(f"  {line}")
-        print("This CAN mean that the game does not recognize these settings. If all settings are working, you can ignore this message.")
+    print_settings_and_original_file_diff(axr_orig, axr_settings)
 
     merged_settings = merge_settings(axr_orig, axr_settings)
     with open("axr_options.ltx", "w") as file_axr_orig:
         file_axr_orig.writelines(merged_settings)
 
-def get_settings_and_original_file_diff(original: list[str], settings: dict[str, str]) -> list[str]:
+def print_settings_and_original_file_diff(original: list[str], settings: dict[str, str]):
     """
     Check to see if any of our settings are not valid, as in not present in the original file.
     Though they still might be valid but hasn't been created in the original file yet.
     This is mainly a warning to users that they might have settings that are not recognized by the game.
     """
+
+    original_settings: set[str] = set()
+    for line in original:
+        if '=' in line:
+            setting_name = line.strip().split('=')[0].strip() if '=' in line else ''
+            if setting_name:
+                original_settings.add(setting_name)
+    
     diff: list[str] = []
     for new_setting_name, value in settings.items():
-        found = False
-        for line in original:
-            original_setting_name = line.strip().split('=')[0].strip() if '=' in line else ''
-            if new_setting_name == original_setting_name:
-                found = True
-                break
-        if not found:
+        if new_setting_name not in original_settings:
             diff.append(f"{new_setting_name} = {value}")
-    return diff
+    
+    if diff:
+        print("The following settings are not present in the original file:")
+        for line in diff:
+            print(f"  {line}")
+        print("This CAN mean that the game does not recognize these settings. If all settings are working, you can ignore this message.")
 
 def make_original_file_backup(original: list[str]) -> None:
     with open("axr_options_backup.ltx", "w") as file_axr_orig_backup:
