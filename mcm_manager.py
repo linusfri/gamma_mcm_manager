@@ -144,7 +144,7 @@ def get_settings_section(
         settings_section_end_index = len(file_contents)
 
     mcm_settings = file_contents[
-        settings_section_start_index + 1 : settings_section_end_index
+        settings_section_start_index + 1 : settings_section_end_index # settings_section_end_index is exclusive
     ]
 
     return mcm_settings, settings_section_start_index, settings_section_end_index
