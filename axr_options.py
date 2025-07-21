@@ -53,8 +53,8 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
     This will overwrite any existing settings in the original file.
     """
     result = original.copy()
-    settings_applied: set[str] = set()
-    EIGHT_SPACES = " " * 8
+    applied_settings: set[str] = set()
+    EIGHT_SPACES = " " * 8 # This is how MCM settings are indented in the original axr_options.ltx
 
     mcm_settings, mcm_settings_start_index, mcm_settings_end_index = get_mcm_settings(result)
     
@@ -65,13 +65,11 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
         if original_setting_name in settings and original_setting_name != '':
             setting_value = settings[original_setting_name]
             mcm_settings[i] = f"{EIGHT_SPACES}{original_setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n"
-            settings_applied.add(original_setting_name)
+            applied_settings.add(original_setting_name)
     
-    # Second pass: add any settings that weren't found in the original file
-    for (setting_name, setting_value) in settings.items():
-        if setting_name in settings_applied:
-            continue
-
+    # Second pass: add any settings that weren't found in the original axr_options file
+    unapplied_settings = {k: v for k, v in settings.items() if k not in applied_settings}
+    for setting_name, setting_value in unapplied_settings.items():
         mcm_settings.insert(len(mcm_settings) - 1, f"{EIGHT_SPACES}{setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n")
 
     result = result[:mcm_settings_start_index + 1] + sorted(mcm_settings) + result[mcm_settings_end_index:]
@@ -87,7 +85,7 @@ def get_mcm_settings(axr_file_contents: list[str]) -> tuple[list[str], int, int]
     mcm_settings_end_index = None
     for i in range(mcm_settings_begin_index + 1, len(axr_file_contents)):
         if axr_file_contents[i].startswith("[") or axr_file_contents[i] == "\n":
-            mcm_settings_end_index = i - 1
+            mcm_settings_end_index = i - 1 # We only want actual settings, not new lines or brackets
             break
 
     # If we have start of mcm but no end, we assume the MCM settings are at the end of the file
