@@ -124,7 +124,7 @@ def get_settings_section(
     axr_file_contents: list[str], section_name: str
 ) -> tuple[list[str], int, int]:
     """
-    Returns the provided section from an axr file.
+    Returns the provided section from an axr_options file.
     Raises ValueError if section is not present.
 
     Example: mcm_settings = get_settings_section(axr_file_contents, "[mcm]\\n")
