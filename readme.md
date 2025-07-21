@@ -7,8 +7,8 @@ A simple tool to be able to store certain settings in a json file and merge thes
 For me it's bothering to keep up to speed with new changes to the MCM values for different GAMMA mods everytime GAMMA is updated. On one hand i don't want to redo my mod settings everytime a new GAMMA version is released, but i also don't want to overwrite everything with my old MCM values. There are certain settings i always change but these are a small subset of all the mod settings available. So i'd rather keep these settings in a separate json file and merge these with each new version of MCM values.
 
 ## How to use
-1. Download latest release
-2. Place ``axr_options.ltx`` and ``settings.json`` in the ``mcm_manager`` folder which you got from the downloaded release **(see example folder in this repo for ``settings.json`` reference)**. The axr_options.ltx can be found in your gamma install path under ``mods/G.A.M.M.A. MCM values - Rename to keep your personal changes/gamedata/configs`` ![Files](/images/file_hierarchy.png)
+1. Download latest release and unzip to a folder
+2. Place ``axr_options.ltx`` and ``settings.json`` in the ``mcm_manager`` folder which you created in step 1 **(see example folder in this repo for ``settings.json`` reference)**. The axr_options.ltx can be found in your gamma install path under ``mods/G.A.M.M.A. MCM values - Rename to keep your personal changes/gamedata/configs`` ![Files](/images/file_hierarchy.png)
 
 3. Run mcm_manager.exe
 4. Make sure the settings are written to axr_options.ltx
