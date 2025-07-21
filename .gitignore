@@ -3,3 +3,4 @@ axr_options*
 *pycache*
 dist*
 build*
+mcm_manager.spec
