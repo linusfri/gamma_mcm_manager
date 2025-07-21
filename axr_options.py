@@ -55,17 +55,16 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
     result = original.copy()
     settings_applied: set[str] = set()
     EIGHT_SPACES = " " * 8
-    mcm_settings_index = result.index("[mcm]\n")
 
-    print(mcm_settings_index)
+    mcm_settings, mcm_settings_start_index, mcm_settings_end_index = get_mcm_settings(result)
     
     # First pass: update existing lines with new settings
-    for i, line in enumerate(result):
+    for i, line in enumerate(mcm_settings):
         original_setting_name = line.strip().split('=')[0].strip() if '=' in line else ''
 
         if original_setting_name in settings and original_setting_name != '':
             setting_value = settings[original_setting_name]
-            result[i] = f"{EIGHT_SPACES}{original_setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n"
+            mcm_settings[i] = f"{EIGHT_SPACES}{original_setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n"
             settings_applied.add(original_setting_name)
     
     # Second pass: add any settings that weren't found in the original file
@@ -73,19 +72,11 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
         if setting_name in settings_applied:
             continue
 
-        result.insert(mcm_settings_index + 1, f"{EIGHT_SPACES}{setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n")
+        mcm_settings.insert(len(mcm_settings) - 1, f"{EIGHT_SPACES}{setting_name} = {setting_value if not isinstance(setting_value, bool) else str(setting_value).lower()}\n")
 
-    return sort_mcm_settings(result)
+    result = result[:mcm_settings_start_index + 1] + sorted(mcm_settings) + result[mcm_settings_end_index:]
 
-def sort_mcm_settings(axr_file_contents: list[str]) -> list[str]:
-    """ Sort the MCM settings in axr file alphabetical order. """
-
-    try:
-        mcm_settings, mcm_settings_begin_index, mcm_settings_end_index = get_mcm_settings(axr_file_contents)
-        return axr_file_contents[:mcm_settings_begin_index + 1] + sorted(mcm_settings) + axr_file_contents[mcm_settings_end_index:]
-    except ValueError:
-        print("No [mcm] section found in the settings file. Cannot sort MCM settings.")
-        return axr_file_contents
+    return result
 
 def get_mcm_settings(axr_file_contents: list[str]) -> tuple[list[str], int, int]:
     """ 
