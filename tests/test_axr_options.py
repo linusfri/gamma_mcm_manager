@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 # Add the parent directory to Python path to import axr_options
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import axr_options
+import mcm_manager
 
 
 class TestAxrOptions(unittest.TestCase):
@@ -47,7 +47,7 @@ class TestAxrOptions(unittest.TestCase):
 
     def test_get_settings_section_mcm(self):
         """Test extracting MCM section from axr file"""
-        mcm_settings, start_idx, end_idx = axr_options.get_settings_section(
+        mcm_settings, start_idx, end_idx = mcm_manager.get_settings_section(
             self.sample_axr_content, "[mcm]\n"
         )
 
@@ -60,13 +60,13 @@ class TestAxrOptions(unittest.TestCase):
     def test_get_settings_section_not_found(self):
         """Test error when section doesn't exist"""
         with self.assertRaises(ValueError):
-            axr_options.get_settings_section(self.sample_axr_content, "[nonexistent]\n")
+            mcm_manager.get_settings_section(self.sample_axr_content, "[nonexistent]\n")
 
     def test_get_settings_section_at_end(self):
         """Test extracting section when it's at the end of file"""
         content_at_end = self.sample_axr_content[:17]  # Remove [modded_exes] section
 
-        _, start_idx, end_idx = axr_options.get_settings_section(
+        _, start_idx, end_idx = mcm_manager.get_settings_section(
             content_at_end, "[mcm]\n"
         )
 
@@ -78,7 +78,7 @@ class TestAxrOptions(unittest.TestCase):
         """Test updating existing settings in MCM section"""
         settings = {"3d_scopes/chromatism": False, "EA_settings/ea_debug": True}
 
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         # Check that existing settings were updated
         mcm_section: list[str] = []
@@ -114,7 +114,7 @@ class TestAxrOptions(unittest.TestCase):
             "another_setting": "string_value",
         }
 
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         self.assertIn(f"{self.EIGHT_SPACES}new_setting/test = 123\n", result)
         self.assertIn(f"{self.EIGHT_SPACES}another_setting = string_value\n", result)
@@ -123,7 +123,7 @@ class TestAxrOptions(unittest.TestCase):
         """Test that boolean values are formatted as lowercase strings"""
         settings = {"test_true": True, "test_false": False}
 
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         self.assertIn(f"{self.EIGHT_SPACES}test_true = true\n", result)
         self.assertIn(f"{self.EIGHT_SPACES}test_false = false\n", result)
@@ -131,7 +131,7 @@ class TestAxrOptions(unittest.TestCase):
     def test_merge_settings_proper_indentation(self):
         """Test that settings are properly indented with 8 spaces"""
         settings = {"new_setting": "value"}
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         # Check that the new setting has proper indentation
         self.assertIn(f"{self.EIGHT_SPACES}new_setting = value\n", result)
@@ -140,7 +140,7 @@ class TestAxrOptions(unittest.TestCase):
         """Test that MCM settings are sorted alphabetically"""
         settings = {"z_last_setting": "value", "a_first_setting": "value"}
 
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         # Extract MCM section
         mcm_start = None
@@ -172,7 +172,7 @@ class TestAxrOptions(unittest.TestCase):
         """Test handling when no MCM section exists"""
         content_no_mcm = ["[character_creation]\n", f"{self.EIGHT_SPACES}setting = value\n"]
 
-        result = axr_options.merge_settings(content_no_mcm, {"test": "value"})
+        result = mcm_manager.merge_settings(content_no_mcm, {"test": "value"})
 
         # Should return original content unchanged
         self.assertEqual(result, content_no_mcm)
@@ -185,7 +185,7 @@ class TestAxrOptions(unittest.TestCase):
         }
 
         with patch("builtins.print") as mock_print:
-            axr_options.print_settings_and_original_file_diff(
+            mcm_manager.print_settings_and_original_file_diff(
                 self.sample_axr_content, settings
             )
 
@@ -201,7 +201,7 @@ class TestAxrOptions(unittest.TestCase):
         }
 
         with patch("builtins.print") as mock_print:
-            axr_options.print_settings_and_original_file_diff(
+            mcm_manager.print_settings_and_original_file_diff(
                 self.sample_axr_content, settings
             )
 
@@ -217,7 +217,7 @@ class TestAxrOptions(unittest.TestCase):
         content_no_mcm = ["[character_creation]\n", "        setting = value\n"]
 
         with patch("builtins.print") as mock_print:
-            axr_options.print_settings_and_original_file_diff(
+            mcm_manager.print_settings_and_original_file_diff(
                 content_no_mcm, {"test": "value"}
             )
 
@@ -235,7 +235,7 @@ class TestAxrOptions(unittest.TestCase):
             temp_path = temp_file.name
 
         try:
-            axr_options.make_file_backup(test_content, temp_path)
+            mcm_manager.make_file_backup(test_content, temp_path)
 
             # Read back the file and verify content
             with open(temp_path, "r") as f:
@@ -256,7 +256,7 @@ class TestAxrOptions(unittest.TestCase):
         ]
 
         settings = {"new_setting": "value"}
-        result = axr_options.merge_settings(malformed_content, settings)
+        result = mcm_manager.merge_settings(malformed_content, settings)
 
         # Should handle malformed lines gracefully
         self.assertIsInstance(result, list)
@@ -270,7 +270,7 @@ class TestAxrOptions(unittest.TestCase):
             "zero_setting": 0,
         }
 
-        result = axr_options.merge_settings(self.sample_axr_content, settings)
+        result = mcm_manager.merge_settings(self.sample_axr_content, settings)
 
         self.assertIn(f"{self.EIGHT_SPACES}integer_setting = 42\n", result)
         self.assertIn(f"{self.EIGHT_SPACES}float_setting = 3.14159\n", result)

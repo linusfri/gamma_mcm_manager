@@ -1,3 +1,5 @@
 axr_options*
 !axr_options.py
 *pycache*
+dist*
+build*
