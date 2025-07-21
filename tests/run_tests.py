@@ -5,12 +5,12 @@ Run with: python run_tests.py [test_name]
 
 import sys
 import unittest
-from . import test_axr_options
+from . import test_mcm_manager
 
 def run_all_tests():
     """Run all test cases"""
     loader = unittest.TestLoader()
-    suite = loader.loadTestsFromModule(test_axr_options)
+    suite = loader.loadTestsFromModule(test_mcm_manager)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return result.wasSuccessful()
@@ -21,7 +21,7 @@ def run_specific_test(test_name: str):
     
     # Try to find the test method
     try:
-        test_class = test_axr_options.TestAxrOptions
+        test_class = test_mcm_manager.TestAxrOptions
         suite.addTest(test_class(test_name))
         
         runner = unittest.TextTestRunner(verbosity=2)
@@ -33,7 +33,7 @@ def run_specific_test(test_name: str):
 
 def list_available_tests():
     """List all available test methods"""
-    test_class = test_axr_options.TestAxrOptions
+    test_class = test_mcm_manager.TestAxrOptions
     test_methods = [method for method in dir(test_class) if method.startswith('test_')]
     
     print("Available tests:")

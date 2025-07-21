@@ -4,7 +4,6 @@ import os
 from typing import Any
 import sys
 from unittest.mock import patch
-from pprint import pprint
 
 # Add the parent directory to Python path to import axr_options
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -43,7 +42,7 @@ class TestAxrOptions(unittest.TestCase):
             "3d_scopes/chromatism": False,
             "3d_scopes/nvg_blur": True,
             "new_setting/test": 123,
-            "another_setting": "string_value"
+            "another_setting": "string_value",
         }
 
     def test_get_settings_section_mcm(self):
@@ -154,8 +153,8 @@ class TestAxrOptions(unittest.TestCase):
             ):
                 mcm_end = i
                 break
-        
-        if (mcm_start is None):
+
+        if mcm_start is None:
             self.fail("Can't find MCM section in test data.")
 
         if mcm_end is None:
@@ -171,7 +170,10 @@ class TestAxrOptions(unittest.TestCase):
 
     def test_merge_settings_no_mcm_section(self):
         """Test handling when no MCM section exists"""
-        content_no_mcm = ["[character_creation]\n", f"{self.EIGHT_SPACES}setting = value\n"]
+        content_no_mcm = [
+            "[character_creation]\n",
+            f"{self.EIGHT_SPACES}setting = value\n",
+        ]
 
         result = mcm_manager.merge_settings(content_no_mcm, {"test": "value"})
 
