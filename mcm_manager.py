@@ -130,9 +130,9 @@ def get_settings_section(
 
     Example: mcm_settings = get_settings_section(file_contents, "[mcm]\\n")
     """
-    settings_section_begin_index = file_contents.index(section_name)
+    settings_section_start_index = file_contents.index(section_name)
     settings_section_end_index = None
-    for i in range(settings_section_begin_index + 1, len(file_contents)):
+    for i in range(settings_section_start_index + 1, len(file_contents)):
         if file_contents[i].startswith("[") or file_contents[i] == "\n":
             settings_section_end_index = (
                 i - 1
@@ -144,10 +144,10 @@ def get_settings_section(
         settings_section_end_index = len(file_contents)
 
     mcm_settings = file_contents[
-        settings_section_begin_index + 1 : settings_section_end_index
+        settings_section_start_index + 1 : settings_section_end_index
     ]
 
-    return mcm_settings, settings_section_begin_index, settings_section_end_index
+    return mcm_settings, settings_section_start_index, settings_section_end_index
 
 
 if __name__ == "__main__":
