@@ -29,7 +29,7 @@ def print_settings_and_original_file_diff(
     This is mainly a warning to users that they might have settings that are not recognized by the game.
     """
     try:
-        raw_original_mcm_settings, _, _ = get_mcm_settings(original)
+        raw_original_mcm_settings, _, _ = get_settings_section(original, "[mcm]\n")
         original_mcm_settings = {
             line.strip().split("=")[0].strip() if "=" in line else ""
             for line in raw_original_mcm_settings
@@ -73,7 +73,7 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
 
     try:
         mcm_settings, mcm_settings_start_index, mcm_settings_end_index = (
-            get_mcm_settings(result)
+            get_settings_section(result, "[mcm]\n")
         )
 
         # First pass: update existing lines with new settings
@@ -117,29 +117,33 @@ def merge_settings(original: list[str], settings: dict[str, typing.Any]) -> list
         return original
 
 
-def get_mcm_settings(axr_file_contents: list[str]) -> tuple[list[str], int, int]:
+def get_settings_section(
+    axr_file_contents: list[str], section_name: str
+) -> tuple[list[str], int, int]:
     """
-    Returns the [MCM] section from an axr file.
-    Raises ValueError if [MCM] section is not present.
+    Returns the provided section from an axr file.
+    Raises ValueError if section is not present.
+
+    Example: mcm_settings = get_settings_section(axr_file_contents, "[mcm]\\n")
     """
-    mcm_settings_begin_index = axr_file_contents.index("[mcm]\n")
-    mcm_settings_end_index = None
-    for i in range(mcm_settings_begin_index + 1, len(axr_file_contents)):
+    settings_section_begin_index = axr_file_contents.index(section_name)
+    settings_section_end_index = None
+    for i in range(settings_section_begin_index + 1, len(axr_file_contents)):
         if axr_file_contents[i].startswith("[") or axr_file_contents[i] == "\n":
-            mcm_settings_end_index = (
+            settings_section_end_index = (
                 i - 1
             )  # We only want actual settings, not new lines or brackets
             break
 
     # If we have start of mcm but no end, we assume the MCM settings are at the end of the file
-    if mcm_settings_end_index is None:
-        mcm_settings_end_index = len(axr_file_contents)
+    if settings_section_end_index is None:
+        settings_section_end_index = len(axr_file_contents)
 
     mcm_settings = axr_file_contents[
-        mcm_settings_begin_index + 1 : mcm_settings_end_index
+        settings_section_begin_index + 1 : settings_section_end_index
     ]
 
-    return mcm_settings, mcm_settings_begin_index, mcm_settings_end_index
+    return mcm_settings, settings_section_begin_index, settings_section_end_index
 
 
 if __name__ == "__main__":
