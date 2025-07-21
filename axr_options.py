@@ -25,16 +25,12 @@ def print_settings_and_original_file_diff(original: list[str], settings: dict[st
     This is mainly a warning to users that they might have settings that are not recognized by the game.
     """
 
-    original_settings: set[str] = set()
-    for line in original:
-        if '=' in line:
-            setting_name = line.strip().split('=')[0].strip() if '=' in line else ''
-            if setting_name:
-                original_settings.add(setting_name)
+    raw_original_mcm_settings, _, _ = get_mcm_settings(original)
+    original_mcm_settings = {line.strip().split('=')[0].strip() if '=' in line else '' for line in raw_original_mcm_settings}
     
     diff: list[str] = []
     for new_setting_name, value in settings.items():
-        if new_setting_name not in original_settings:
+        if new_setting_name not in original_mcm_settings:
             diff.append(f"{new_setting_name} = {value}")
     
     if diff:

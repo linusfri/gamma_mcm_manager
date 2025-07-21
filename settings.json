@@ -62,6 +62,5 @@
     "ssfx_module/water/parallax_quality_mcm": 3,
     "ssfx_module/water/ssr_quality_mcm": 4,
     "ssfx_module/wpn_dof/aim_blur_mcm": 0.3,
-    "ssfx_module/wpn_dof/aim_edgeblur_mcm": 0,
-    "video/basic/hud_fov": 0.8
+    "ssfx_module/wpn_dof/aim_edgeblur_mcm": 0
 }
