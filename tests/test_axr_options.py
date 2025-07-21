@@ -195,9 +195,9 @@ class TestAxrOptions(unittest.TestCase):
     def test_print_settings_and_original_file_diff_with_diff(self):
         """Test diff function when some settings don't exist in original"""
         settings: dict[str, Any] = {
-            "21_game/card_game_21_minimum_rate": 1000,  # Exists
-            "nonexistent_setting": "value",  # Doesn't exist
-            "another_new_setting": 123,  # Doesn't exist
+            "21_game/card_game_21_minimum_rate": 1000,  # Should exist
+            "nonexistent_setting": "value",  # Shouldn't exist
+            "another_new_setting": 123,  # Shouldn't exist
         }
 
         with patch("builtins.print") as mock_print:
