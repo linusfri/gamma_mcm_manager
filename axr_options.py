@@ -1,20 +1,23 @@
 import json
 import typing
-
+import sys
+from datetime import datetime
 
 def main():
+    path = sys.argv[1] if len(sys.argv) > 1 else "."
+    current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
     try:
-        with open("settings.json", "r") as settings_file:
+        with open(f"{path}/settings.json", "r") as settings_file:
             settings = json.load(settings_file)
 
-        with open("axr_options.ltx", "r") as file_original:
+        with open(f"{path}/axr_options.ltx", "r") as file_original:
             original = file_original.readlines()
 
-        make_file_backup(original, "axr_options_backup.ltx")
+        make_file_backup(original, f"{path}/axr_options_backup_{current_datetime}.ltx")
         print_settings_and_original_file_diff(original, settings)
 
         merged_settings = merge_settings(original, settings)
-        with open("axr_options.ltx", "w") as file_original:
+        with open(f"{path}/axr_options.ltx", "w") as file_original:
             file_original.writelines(merged_settings)
     except OSError as error:
         print("Something went wrong while reading or writing to files.", error)

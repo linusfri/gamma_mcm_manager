@@ -1,5 +1,5 @@
 {
-    "3d_scopes/zoom_factor": "1",
+    "3d_scopes/zoom_factor": 1,
     "SMR/smr_loot/ammo_spawn": true,
     "SMR/smr_loot/meds_spawn": true,
     "SMR/smr_loot/repair_minor_spawn": true,
