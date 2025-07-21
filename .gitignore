@@ -1,2 +1,4 @@
 axr_options*
-*__pycache__*
+__pycache__
+__pycache__/
+__pycache__/*
