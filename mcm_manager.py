@@ -2,6 +2,7 @@ import json
 import typing
 import sys
 from datetime import datetime
+from classes.setting import Setting
 
 
 def main():
@@ -34,14 +35,14 @@ def print_settings_and_original_file_diff(
     """
     try:
         raw_original_mcm_settings, _, _ = get_settings_section(original, "[mcm]\n")
-        original_mcm_settings = {
+        original_mcm_setting_names = {
             line.strip().split("=")[0].strip() if "=" in line else ""
             for line in raw_original_mcm_settings
         }
 
         diff: list[str] = []
         for new_setting_name, value in settings.items():
-            if new_setting_name not in original_mcm_settings:
+            if new_setting_name not in original_mcm_setting_names:
                 diff.append(f"{new_setting_name} = {value}")
 
         if diff:
@@ -56,6 +57,14 @@ def print_settings_and_original_file_diff(
             "Could not calculate settings diff. Failed to get mcm settings from original file.",
             error,
         )
+
+
+def get_setting(line: str, separator: str) -> Setting:
+    setting_data = line.strip().split(separator)
+    name = setting_data[0].strip()
+    value = setting_data[1].strip() if len(setting_data) >= 2 else ""
+
+    return Setting(name, value)
 
 
 def make_file_backup(file_contents: list[str], path: str) -> None:
@@ -144,7 +153,8 @@ def get_settings_section(
         settings_section_end_index = len(file_contents)
 
     mcm_settings = file_contents[
-        settings_section_start_index + 1 : settings_section_end_index # settings_section_end_index is exclusive
+        settings_section_start_index
+        + 1 : settings_section_end_index  # settings_section_end_index is exclusive
     ]
 
     return mcm_settings, settings_section_start_index, settings_section_end_index
