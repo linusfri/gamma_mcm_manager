@@ -12,15 +12,15 @@ def main():
         with open(f"{path}/settings.json", "r") as settings_file:
             settings = json.load(settings_file)
 
-        with open(f"{path}/axr_options.ltx", "r") as file_original:
-            original = file_original.readlines()
+        with open(f"{path}/axr_options.ltx", "r") as original_file:
+            original = original_file.readlines()
 
         make_file_backup(original, f"{path}/axr_options_backup_{current_datetime}.ltx")
         print_settings_and_original_file_diff(original, settings)
 
         merged_settings = merge_settings(original, settings)
-        with open(f"{path}/axr_options.ltx", "w") as file_original:
-            file_original.writelines(merged_settings)
+        with open(f"{path}/axr_options.ltx", "w") as original_file:
+            original_file.writelines(merged_settings)
     except OSError as error:
         print("Something went wrong while reading or writing to files.", error)
 
