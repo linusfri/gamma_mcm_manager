@@ -3,18 +3,22 @@ import typing
 import sys
 from datetime import datetime
 from classes.setting import Setting
+import os
+
+path = sys.argv[1] if len(sys.argv) > 1 else "."
 
 
 def main():
-    path = sys.argv[1] if len(sys.argv) > 1 else "."
     current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+    check_create_required_files()
+
     try:
         with open(f"{path}/settings.json", "r") as user_settings_file:
             user_settings = json.load(user_settings_file)
 
         with open(f"{path}/axr_options.ltx", "r") as default_file:
             default = default_file.readlines()
-        
+
         with open(f"{path}/axr_options_saved.ltx", "r") as user_axr_ltx_settings_file:
             user_axr_ltx_settings = user_axr_ltx_settings_file.readlines()
 
@@ -23,10 +27,25 @@ def main():
 
         with open(f"{path}/axr_options.ltx", "w") as default_file:
             default_file.writelines(merge_settings(default, user_settings))
-        
-        create_json_file_from_user_and_default_settings_diff(default, user_axr_ltx_settings, path)
+
+        create_json_file_from_user_and_default_settings_diff(
+            default, user_axr_ltx_settings, path
+        )
     except OSError as error:
         print("Something went wrong while reading or writing to files.", error)
+
+
+def check_create_required_files():
+    """Creates the required files if not present. Otherwise does nothing."""
+    required_files = [
+        f"{path}/settings.json",
+        f"{path}/axr_options.ltx",
+        f"{path}/axr_options_saved.ltx",
+    ]
+
+    for file in required_files:
+        if not os.path.exists(file):
+            open(file, "w").close()
 
 
 def print_settings_and_default_file_diff(
