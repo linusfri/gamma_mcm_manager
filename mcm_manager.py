@@ -134,7 +134,7 @@ def get_settings_section(
     file_contents: list[str], section_name: str
 ) -> tuple[list[str], int, int]:
     """
-    Returns the provided section from an options file.
+    Returns the provided section from an options file, along with start and end index for section.
     Raises ValueError if section is not present.
 
     Example: mcm_settings = get_settings_section(file_contents, "[mcm]\\n")
