@@ -45,12 +45,12 @@ def check_create_required_files():
     ]
 
     for file_path in required_files:
-        if file_path.endswith(".json"):
-            with open(file_path, "w") as file:
-                file.writelines("{}")
-                continue
-
         if not os.path.exists(file_path):
+            if file_path.endswith(".json"):
+                with open(file_path, "w") as file:
+                    file.writelines("{}")
+                    continue
+
             open(file_path, "w").close()
 
 
