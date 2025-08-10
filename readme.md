@@ -15,6 +15,10 @@ For me it's bothering to keep up to speed with new changes to the MCM values for
 5. Rename the ``G.A.M.M.A. MCM values - Rename to keep your personal changes`` to ``G.A.M.M.A. MCM values - Saved``
 6. Place the merged ``axr_options.ltx`` file in ``mods/G.A.M.M.A. MCM values - Saved/gamedata/configs``
 
+## To generate a json settings file based on the difference between your existing axr_options.ltx file and the default one
+1. Place the default axr_options.ltx and your edited **axr_options_saved.ltx** file in the same directory. As of now the file has to be named **axr_options_saved.ltx**. Will make the tool more flexible in the future.
+2. Goto the section "How to use" above.
+
 ## What does it do?
 It's a simple script that reads the ``settings.json`` file and then looks for corresponding settings in ``axr_options.ltx``. If it finds a corresponding setting in ``axr_options.ltx``, it will be overwritten with the setting in ``setting.json``.
 
