@@ -39,13 +39,19 @@ def check_create_required_files():
     """Creates the required files if not present. Otherwise does nothing."""
     required_files = [
         f"{path}/settings.json",
+        f"{path}/generated_user_settings.json",
         f"{path}/axr_options.ltx",
         f"{path}/axr_options_saved.ltx",
     ]
 
-    for file in required_files:
-        if not os.path.exists(file):
-            open(file, "w").close()
+    for file_path in required_files:
+        if file_path.endswith(".json"):
+            with open(file_path, "w") as file:
+                file.writelines("{}")
+                continue
+
+        if not os.path.exists(file_path):
+            open(file_path, "w").close()
 
 
 def print_settings_and_default_file_diff(
