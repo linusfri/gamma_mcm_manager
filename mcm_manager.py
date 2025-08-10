@@ -105,7 +105,7 @@ def create_json_file_from_user_and_default_settings_diff(
         if user_setting.value != default_setting.value:
             json_data[user_setting_name] = user_setting.value
 
-    with open(f"{path}/generated_users_settings.json", "w") as generated_user_settings:
+    with open(f"{path}/generated_user_settings.json", "w") as generated_user_settings:
         generated_user_settings.writelines(json.dumps(json_data))
 
 

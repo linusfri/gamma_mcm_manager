@@ -313,7 +313,7 @@ class TestAxrOptions(unittest.TestCase):
                 temp_dir
             )
             
-            json_file_path = os.path.join(temp_dir, "generated_users_settings.json")
+            json_file_path = os.path.join(temp_dir, "generated_user_settings.json")
             self.assertTrue(os.path.exists(json_file_path))
             
             with open(json_file_path, 'r') as f:
@@ -344,7 +344,7 @@ class TestAxrOptions(unittest.TestCase):
                 temp_dir
             )
             
-            json_file_path = os.path.join(temp_dir, "generated_users_settings.json")
+            json_file_path = os.path.join(temp_dir, "generated_user_settings.json")
             self.assertTrue(os.path.exists(json_file_path))
             
             with open(json_file_path, 'r') as f:
@@ -370,7 +370,7 @@ class TestAxrOptions(unittest.TestCase):
                 temp_dir
             )
             
-            json_file_path = os.path.join(temp_dir, "generated_users_settings.json")
+            json_file_path = os.path.join(temp_dir, "generated_user_settings.json")
             
             with open(json_file_path, 'r') as f:
                 result = json.load(f)
