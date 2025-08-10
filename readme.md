@@ -27,4 +27,4 @@ If a setting in ``settings.json`` doesn't exist in ``axr_options.ltx``, then tha
 Everytime the program is run, a backup is created with a datetime stamp. This way you always have a file to go back to if things go wrong.
 
 ## Important
-It's a good idea to run the game once with the new default ``axr_options.ltx`` before running this tool. The game have to be launched to populate the default ``axr_options.ltx``. Be sure to load a save or start a new game and then exit.
+It's a good idea to run the game once with the new default ``axr_options.ltx`` before running this tool. The game has to be launched to populate the default ``axr_options.ltx``. Be sure to load a save or start a new game and then exit.
