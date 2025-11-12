@@ -95,8 +95,17 @@ def create_json_file_from_user_and_default_settings_diff(
     Generates a json file based on the difference in existing user defined axr_options.ltx and default axr_options.ltx
     The point of this is to not have to go through custom settings manually and compare with default.
     """
-    raw_default_mcm_settings, _, _ = get_settings_section(default, "[mcm]\n")
-    raw_user_mcm_settings, _, _ = get_settings_section(user_axr_ltx_settings, "[mcm]\n")
+    try:
+        raw_default_mcm_settings, _, _ = get_settings_section(default, "[mcm]\n")
+        raw_user_mcm_settings, _, _ = get_settings_section(
+            user_axr_ltx_settings, "[mcm]\n"
+        )
+    except ValueError:
+        print(
+            "Could not create generated_user_settings.json. Is one of the files missing the MCM section?"
+        )
+        return
+
     json_data: dict[str, typing.Any] = {}
 
     default_mcm_settings = parse_settings_from_lines(raw_default_mcm_settings)
