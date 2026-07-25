@@ -4,6 +4,7 @@ axr_options*
 dist*
 build*
 mcm_manager.spec
+
 # Devenv
 .devenv*
 devenv.local.nix
